@@ -47,19 +47,27 @@ function removeBeverage() {
 
 function displayOrder() {
     const orderSummary = document.getElementById('orderSummary');
-    let beverage = sessionStorage.getItem('beverage');
-    let condiments = JSON.parse(sessionStorage.getItem('condiments') || '[]');
+    const beverage = sessionStorage.getItem('beverage');
+    const condiments = JSON.parse(sessionStorage.getItem('condiments') || '[]');
 
+    // Initialize the order summary with the beverage information
     let displayHtml = `<strong>Order Summary:</strong><br>`;
-    displayHtml += `<span class="clickable" onclick="removeBeverage()">${beverage}</span><br>`;
+    if (beverage) {
+        displayHtml += `<span class="clickable" onclick="removeBeverage()">${beverage}</span><br>`;
+    } else {
+        displayHtml += "No beverage selected.<br>"; 
+    }
 
-    displayHtml += `Condiments: <br>`;
-    condiments.forEach((condiment, index) => {
-        displayHtml += `<span class="clickable" onclick="removeCondiment(${index})">${condiment}</span><br>`;
-    });
+    if (condiments.length > 0) {
+        displayHtml += `Condiments:<br>`;
+        condiments.forEach((condiment, index) => {
+            displayHtml += `<span class="clickable" onclick="removeCondiment(${index})">${condiment}</span><br>`;
+        });
+    }
 
     orderSummary.innerHTML = displayHtml;
 }
+
 
 
 function confirmOrder() {
