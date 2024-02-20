@@ -37,6 +37,7 @@ function removeCondiment(index) {
 
 function removeBeverage() {
     sessionStorage.removeItem('beverage'); 
+    sessionStorage.removeItem('condiments');
     location.href = 'selectBeverage.html'; 
 }
 
