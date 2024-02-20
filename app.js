@@ -13,26 +13,52 @@ function selectBeverage(beverage) {
 function addCondiment(condiment) {
     // Retrieve the current list of condiments from sessionStorage, or initialize an empty array if none exist.
     let condiments = sessionStorage.getItem('condiments') ? JSON.parse(sessionStorage.getItem('condiments')) : [];
-    // Check if the selected condiment is already in the array.
-    if (condiments.includes(condiment)) {
-        alert(`${condiment} has already been added.`);
+    const index = condiments.indexOf(condiment);
+
+    // If the condiment is already in the array, remove it. Otherwise, add it.
+    if (index > -1) {
+        condiments.splice(index, 1); // Remove the condiment
     } else {
-        // If the condiment is not in the array, add it.
+        // Add the condiment
         condiments.push(condiment);
-        sessionStorage.setItem('condiments', JSON.stringify(condiments));
-        displayOrder(); // Update the display to show the current order.
     }
 
+    sessionStorage.setItem('condiments', JSON.stringify(condiments)); // Update sessionStorage with the new list of condiments
+    displayOrder(); // Refresh the order summary display
 }
+
+
+function removeCondiment(index) {
+    let condiments = JSON.parse(sessionStorage.getItem('condiments') || '[]');
+    condiments.splice(index, 1); 
+    sessionStorage.setItem('condiments', JSON.stringify(condiments)); // Update sessionStorage
+    displayOrder(); // Refresh the order summary display
+}
+
+function removeBeverage() {
+    sessionStorage.removeItem('beverage'); 
+    location.href = 'selectBeverage.html'; 
+}
+
 
 
 
 function displayOrder() {
     const orderSummary = document.getElementById('orderSummary');
-    const beverage = sessionStorage.getItem('beverage');
-    const condiments = JSON.parse(sessionStorage.getItem('condiments') || '[]');
-    orderSummary.innerHTML = `<strong>Order Summary:</strong><br>Beverage: ${beverage}<br>Condiments: ${condiments.join(', ')}`;
+    let beverage = sessionStorage.getItem('beverage');
+    let condiments = JSON.parse(sessionStorage.getItem('condiments') || '[]');
+
+    let displayHtml = `<strong>Order Summary:</strong><br>`;
+    displayHtml += `<span class="clickable" onclick="removeBeverage()">${beverage}</span><br>`;
+
+    displayHtml += `Condiments: <br>`;
+    condiments.forEach((condiment, index) => {
+        displayHtml += `<span class="clickable" onclick="removeCondiment(${index})">${condiment}</span><br>`;
+    });
+
+    orderSummary.innerHTML = displayHtml;
 }
+
 
 function confirmOrder() {
     const beverage = sessionStorage.getItem('beverage');

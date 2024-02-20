@@ -11,3 +11,9 @@ body {
     display: inline-block;
     text-align: left;
 }
+
+.clickable {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
