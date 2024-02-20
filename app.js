@@ -11,16 +11,20 @@ function selectBeverage(beverage) {
 }
 
 function addCondiment(condiment) {
+    // Retrieve the current list of condiments from sessionStorage, or initialize an empty array if none exist.
     let condiments = sessionStorage.getItem('condiments') ? JSON.parse(sessionStorage.getItem('condiments')) : [];
-    // Check if the condiment is already added
-    if (!condiments.includes(condiment)) {
+
+    // Check if the selected condiment is already in the array.
+    if (condiments.includes(condiment)) {
+        alert(`${condiment} has already been added.`);
+    } else {
+        // If the condiment is not in the array, add it.
         condiments.push(condiment);
         sessionStorage.setItem('condiments', JSON.stringify(condiments));
-        displayOrder();
-    } else {
-        alert(condiment + " has already been added.");
+        displayOrder(); // Update the display to show the current order.
     }
 }
+
 
 
 function displayOrder() {
@@ -44,13 +48,20 @@ function confirmOrder() {
             condiments: condiments,
         }),
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         sessionStorage.setItem('orderConfirmation', JSON.stringify(data));
-        location.href = 'orderConfirmation.html';
+        window.location.href = 'orderConfirmation.html'; 
     })
     .catch((error) => {
         console.error('Error:', error);
+        alert('There was an error submitting your order. Please try again.');
     });
 }
+
 
