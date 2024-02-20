@@ -12,10 +12,16 @@ function selectBeverage(beverage) {
 
 function addCondiment(condiment) {
     let condiments = sessionStorage.getItem('condiments') ? JSON.parse(sessionStorage.getItem('condiments')) : [];
-    condiments.push(condiment);
-    sessionStorage.setItem('condiments', JSON.stringify(condiments));
-    displayOrder();
+    // Check if the condiment is already added
+    if (!condiments.includes(condiment)) {
+        condiments.push(condiment);
+        sessionStorage.setItem('condiments', JSON.stringify(condiments));
+        displayOrder();
+    } else {
+        alert(condiment + " has already been added.");
+    }
 }
+
 
 function displayOrder() {
     const orderSummary = document.getElementById('orderSummary');
