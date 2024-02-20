@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function selectBeverage(beverage) {
     sessionStorage.setItem('beverage', beverage);
     location.href = 'addCondiments.html';
+    displayOrder();
 }
 
 function addCondiment(condiment) {
