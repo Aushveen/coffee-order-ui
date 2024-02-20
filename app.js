@@ -13,7 +13,7 @@ function selectBeverage(beverage) {
 function addCondiment(condiment) {
     // Retrieve the current list of condiments from sessionStorage, or initialize an empty array if none exist.
     let condiments = sessionStorage.getItem('condiments') ? JSON.parse(sessionStorage.getItem('condiments')) : [];
-
+    console.log("Before adding:", condiments);
     // Check if the selected condiment is already in the array.
     if (condiments.includes(condiment)) {
         alert(`${condiment} has already been added.`);
@@ -23,6 +23,8 @@ function addCondiment(condiment) {
         sessionStorage.setItem('condiments', JSON.stringify(condiments));
         displayOrder(); // Update the display to show the current order.
     }
+    console.log("After adding:", condiments);
+
 }
 
 
