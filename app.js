@@ -83,7 +83,7 @@ function confirmOrder() {
     // Print the JSON body to the console
     console.log("Submitting order with JSON body:", JSON.stringify(orderData));
 
-    fetch('https://coffee-order-latest-2unk.onrender.com', {
+    fetch('https://coffee-order-latest-2unk.onrender.com/orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
