@@ -79,7 +79,7 @@ function confirmOrder() {
 
     console.log("Submitting order with JSON body:", JSON.stringify(orderData));
 
-    fetch('https://coffee-order-latest-1-ouyu.onrender.com/orders', {
+    fetch('https://coffee-order-latest-2unk.onrender.com/orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ function handleSignup(event) {
         email: email
     };
 
-    fetch('https://coffee-order-latest-1-ouyu.onrender.com/signup', {
+    fetch('https://coffee-order-latest-2unk.onrender.com/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ function handleSignin(event) {
         password: password
     };
 
-    fetch('https://coffee-order-latest-1-ouyu.onrender.com/signin', {
+    fetch('https://coffee-order-latest-2unk.onrender.com/signin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
