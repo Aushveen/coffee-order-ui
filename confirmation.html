@@ -58,6 +58,34 @@
       button:hover {
         background-color: #654321; /* Darker brown on hover */
       }
+      .order-placed {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+      #receiptContainer {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        p {
+          margin: 10px 0;
+          color: #333;
+        }
+
+        p.cost {
+          font-weight: bold;
+          font-size: 1.2em;
+          color: #007bff;
+        }
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -68,13 +96,32 @@
         </div>
         <div class="right-align">
           <a href="status.html">Order Status</a>
-          <a href="login.html">Login</a>
         </div>
       </nav>
     </header>
-    <button onclick="window.location.href='beverage.html'">
-      Start your order here
-    </button>
-    <script src="configuration.js"></script>
+    <!-- <div class="order-placed">
+      <h2>Order Placed! ID: 123</h2>
+      <h3>
+        Your venti latte, 7 shots, extra whip, caramel drizzle, no ice, is:
+      </h3>
+      <h4>$17.94</h4>
+    </div> -->
+    <div id="receiptContainer" class="order-placed"></div>
+
+    <script>
+      // Retrieve receipt data from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const receiptJson = urlParams.get("receipt");
+      const receiptData = JSON.parse(decodeURIComponent(receiptJson));
+      const roundedCost = receiptData.cost.toFixed(2);
+
+      // Display receipt data in a div
+      const receiptContainer = document.getElementById("receiptContainer");
+      receiptContainer.innerHTML = `
+            <p><strong>Description:</strong> ${receiptData.description}</p>
+            <p><strong>Cost:</strong> $${roundedCost}</p>
+            <p><strong>ID:</strong> ${receiptData.id}</p>
+        `;
+    </script>
   </body>
 </html>

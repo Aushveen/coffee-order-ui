@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: rgb(224, 202, 157);
+        color: black;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(224, 202, 157);
+        color: black;
+        padding: 10px;
+      }
+
+      nav a {
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 2rem;
+      }
+
+      .left-align h1 {
+        color: brown;
+        margin: 0;
+        font-weight: bold;
+        font-size: 2rem;
+      }
+
+      .right-align {
+        display: flex;
+        gap: 15px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .button-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+
+      button {
+        padding: 20px 40px; /* Increased padding for a larger button */
+        font-size: 18px; /* Increased font size for better visibility */
+        background-color: brown; /* Brown button color */
+        color: #fff; /* White text color */
+        border: none;
+        cursor: pointer;
+        border-radius: 10px; /* Rounded corners */
+      }
+      button:hover {
+        background-color: #654321; /* Darker brown on hover */
+      }
+
+      .selected-condiments {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .selected-condiments li {
+        background-color: #8b4513; /* Brown color */
+        color: #fff; /* White text color */
+        padding: 5px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        white-space: nowrap; /* Prevents text wrapping */
+      }
+      .condiment-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin: 20px;
+        padding: 10px;
+        background-color: #8b4513; /* Brown color */
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+
+      .condiment-label {
+        color: #fff; /* White text color */
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .confirm-button {
+        margin-top: 20px;
+        background-color: #4caf50; /* Green color for confirmation button */
+        color: #fff; /* White text color */
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #selectedBeverage {
+        color: white; /* Set initial text color */
+        cursor: pointer;
+      }
+
+      #selectedBeverage:hover {
+        color: grey; /* Change text color on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <div class="left-align">
+          <a href="index.html"><h1>Coffee Order System</h1></a>
+        </div>
+        <div class="right-align">
+          <a href="status.html">Order Status</a>
+          <a href="login.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="button-container">
+      <button onclick="toggleCondiment('Milk')">Milk</button>
+      <button onclick="toggleCondiment('Mocha')">Mocha</button>
+      <button onclick="toggleCondiment('Soy')">Soy</button>
+      <button onclick="toggleCondiment('Whip')">Whip</button>
+    </div>
+    <div class="condiment-container">
+      <div
+        class="condiment-label"
+        id="selectedBeverage"
+        onclick="redirectToBeveragePage()"
+      ></div>
+      <ul class="selected-condiments" id="selectedCondiments"></ul>
+      <button class="confirm-button" onclick="confirmOrder()">
+        Confirm Order
+      </button>
+    </div>
+    <script>
+      let selectedBeverage = document.getElementById("selectedBeverage");
+      const urlParams = new URLSearchParams(window.location.search);
+      const beverage = urlParams.get("beverage");
+      selectedBeverage.innerText = beverage;
+      function redirectToBeveragePage() {
+        // Redirect to beverage.html (replace with your actual file name)
+        window.location.href = "beverage.html";
+      }
+      function toggleCondiment(condiment) {
+        const selectedCondimentsList =
+          document.getElementById("selectedCondiments");
+        const condimentIndex = Array.from(
+          selectedCondimentsList.children
+        ).findIndex((li) => li.textContent.trim() === condiment);
+
+        if (condimentIndex === -1) {
+          // Add the condiment to the list
+          const li = document.createElement("li");
+          li.textContent = condiment;
+          selectedCondimentsList.appendChild(li);
+        } else {
+          // Remove the condiment from the list
+          selectedCondimentsList.removeChild(
+            selectedCondimentsList.children[condimentIndex]
+          );
+        }
+      }
+      // let host = "http://localhost:8080/orders";
+      let host = "https://coffee-order-latest-2unk.onrender.com";
+      function confirmOrder() {
+        // window.location.href = "confirmation.html";
+        const selectedBeverage = document
+          .getElementById("selectedBeverage")
+          .textContent.trim();
+
+        const selectedCondimentsList =
+          document.getElementById("selectedCondiments");
+        const selectedCondiments = Array.from(
+          selectedCondimentsList.children
+        ).map((li) => li.textContent.trim());
+
+        const orderData = {
+          beverage: selectedBeverage,
+          condiments: selectedCondiments,
+        };
+        console.log(orderData);
+
+        fetch(host, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${configuration.token()}`,
+          },
+          body: JSON.stringify(orderData),
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Failed to confirm order");
+            }
+          })
+          .then((data) => {
+            // Handle the response data as needed
+            console.log("Order confirmed:", data);
+            const receiptJson = JSON.stringify(data);
+            console.log();
+            // Redirect to the confirmation page
+            window.location.href = `confirmation.html?receipt=${encodeURIComponent(
+              receiptJson
+            )}`;
+          })
+          .catch((error) => {
+            console.error("Error confirming order:", error);
+            // Handle error as needed
+          });
+      }
+    </script>
+    <script src="configuration.js"></script>
+  </body>
+</html>

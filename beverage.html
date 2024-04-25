@@ -40,20 +40,31 @@
         gap: 15px;
       }
 
-      button {
-        padding: 20px 40px;
-        font-size: 18px;
-        background-color: brown;
-        color: #fff;
-        border: none;
-        cursor: pointer;
+      .button-container {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .button-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
         margin: 0;
         position: absolute;
         top: 50%;
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-        border-radius: 10px;
+      }
+
+      button {
+        padding: 20px 40px; /* Increased padding for a larger button */
+        font-size: 18px; /* Increased font size for better visibility */
+        background-color: brown; /* Brown button color */
+        color: #fff; /* White text color */
+        border: none;
+        cursor: pointer;
+        border-radius: 10px; /* Rounded corners */
       }
       button:hover {
         background-color: #654321; /* Darker brown on hover */
@@ -72,9 +83,18 @@
         </div>
       </nav>
     </header>
-    <button onclick="window.location.href='beverage.html'">
-      Start your order here
-    </button>
+    <div class="button-container">
+      <button onclick="goToCondimentPage('Dark Roast')">Dark Roast</button>
+      <button onclick="goToCondimentPage('Espresso')">Espresso</button>
+      <button onclick="goToCondimentPage('House Blend')">House Blend</button>
+      <button onclick="goToCondimentPage('Decaf')">Decaf</button>
+    </div>
+    <script>
+      function goToCondimentPage(beverage) {
+        window.location.href =
+          "condiments.html?beverage=" + encodeURIComponent(beverage);
+      }
+    </script>
     <script src="configuration.js"></script>
   </body>
 </html>
